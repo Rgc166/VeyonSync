@@ -1,4 +1,4 @@
-﻿VEYON SYNC 2.0 — TUTORIAL RÁPIDO
+﻿VEYON SYNC 2.2 — TUTORIAL RÁPIDO
 =================================
 
 Veyon Sync THC — Professor : recebe os dados dos alunos, mantém inventário/histórico e atualiza o Veyon.
