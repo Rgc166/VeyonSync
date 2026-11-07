@@ -85,7 +85,8 @@ try {
     Tool pack --product STD --version $Version --min 2.0.0 --notes-file $nf --service (Join-Path $pend 'Student') --app (Join-Path $pend 'Student\App') --key-dir $keyDir --out $std
     Tool verify $thc --product THC --pub $pubFile
     Tool verify $std --product STD --pub $pubFile
-    # 6.1 Pacote completo para primeira instalação (THC, STD, menu e tutorial offline)
+
+    # 6.1 ZIP completo para a primeira instalação: serviços, interfaces, menu e tutoriais offline.
     $installer = Join-Path $outDir 'VeyonSync-Instalacao-win-x64.zip'
     if (-not (Test-Path (Join-Path $pend 'INICIAR.bat'))) { throw 'Instalador incompleto: INICIAR.bat ausente.' }
     if (-not (Test-Path (Join-Path $pend 'LEIA-ME.txt'))) { throw 'Instalador incompleto: tutorial offline ausente.' }
@@ -95,7 +96,22 @@ try {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $archive = [System.IO.Compression.ZipFile]::OpenRead($installer)
     try {
-        if (-not ($archive.Entries | Where-Object { $_.FullName -match '(^|/)INICIAR\.bat
+        $hasMenu = @($archive.Entries | Where-Object { $_.FullName -match '(^|[\\/])INICIAR\.bat$' }).Count -gt 0
+        $hasGuide = @($archive.Entries | Where-Object { $_.FullName -match '(^|[\\/])LEIA-ME\.txt$' }).Count -gt 0
+        if (-not $hasMenu) { throw 'O ZIP de instalação não contém INICIAR.bat.' }
+        if (-not $hasGuide) { throw 'O ZIP de instalação não contém o tutorial LEIA-ME.txt.' }
+    } finally {
+        $archive.Dispose()
+    }
+
+    # 6.2 Hashes de todos os artefatos que serão anexados à Release.
+    $releaseAssets = @($installer, $thc, $std)
+    $sumLines = foreach ($asset in $releaseAssets) {
+        $hash = Get-FileHash -LiteralPath $asset -Algorithm SHA256
+        "{0}  {1}" -f $hash.Hash, (Split-Path $asset -Leaf)
+    }
+    $sumLines | Set-Content (Join-Path $outDir 'SHA256SUMS.txt') -Encoding ASCII
+    Log "Instalador completo, THC e STD prontos em $outDir" 'Green'
 
     # 7. Publicação com confirmação final
     if ($publish) {
@@ -106,65 +122,6 @@ try {
         if ($ok -ne 'PUBLICAR') { Log 'Publicação cancelada. Os pacotes locais foram mantidos.' 'Yellow' }
         else {
             $args2 = @('release', 'create', "v$Version", $installer, $thc, $std, (Join-Path $outDir 'SHA256SUMS.txt'), '--repo', $Repo, '--title', "Veyon Sync $Version", '--notes-file', $nf)
-            if ($pre) { $args2 += '--prerelease' }
-            if ((GhRun @args2) -ne 0) { throw 'gh release create falhou (veja a mensagem acima).' }
-            Log "Release v$Version publicada em https://github.com/$Repo/releases/tag/v$Version" 'Green'
-        }
-    }
-    Log 'Lembrete: as instalações só aceitam pacotes desta chave a partir de uma versão compilada com assets\release-public-key.txt.' 'DarkGray'
-} catch {
-    Log ("ERRO: " + $_.Exception.Message) 'Red'
-    $code = 1
-}
-Write-Host ''
-Write-Host "Log: $log" -ForegroundColor Cyan
-exit $code
- })) { throw 'O ZIP de instalação não contém INICIAR.bat.' }
-        if (-not ($archive.Entries | Where-Object { $_.FullName -match '(^|/)LEIA-ME\.txt
-
-    # 7. Publicação com confirmação final
-    if ($publish) {
-        Write-Host ''
-        Write-Host "Publicar v$Version em $Repo $(if ($pre) {'(versão de TESTE)'})" -ForegroundColor Yellow
-        Write-Host "  $thc`n  $std" -ForegroundColor Yellow
-        $ok = Read-Host 'Digite PUBLICAR para confirmar'
-        if ($ok -ne 'PUBLICAR') { Log 'Publicação cancelada. Os pacotes locais foram mantidos.' 'Yellow' }
-        else {
-            $args2 = @('release', 'create', "v$Version", $thc, $std, (Join-Path $outDir 'SHA256SUMS.txt'), '--repo', $Repo, '--title', "Veyon Sync $Version", '--notes-file', $nf)
-            if ($pre) { $args2 += '--prerelease' }
-            if ((GhRun @args2) -ne 0) { throw 'gh release create falhou (veja a mensagem acima).' }
-            Log "Release v$Version publicada em https://github.com/$Repo/releases/tag/v$Version" 'Green'
-        }
-    }
-    Log 'Lembrete: as instalações só aceitam pacotes desta chave a partir de uma versão compilada com assets\release-public-key.txt.' 'DarkGray'
-} catch {
-    Log ("ERRO: " + $_.Exception.Message) 'Red'
-    $code = 1
-}
-Write-Host ''
-Write-Host "Log: $log" -ForegroundColor Cyan
-exit $code
- })) { throw 'O ZIP de instalação não contém o tutorial LEIA-ME.txt.' }
-    } finally { $archive.Dispose() }
-
-    # 6.2 Hashes dos três arquivos que serão distribuídos na Release.
-    $releaseAssets = @($thc, $std, $installer)
-    $sumLines = foreach ($asset in $releaseAssets) {
-        $hash = Get-FileHash -LiteralPath $asset -Algorithm SHA256
-        "{0}  {1}" -f $hash.Hash, (Split-Path $asset -Leaf)
-    }
-    $sumLines | Set-Content (Join-Path $outDir 'SHA256SUMS.txt') -Encoding ASCII
-    Log "Pacotes THC, STD e instalador completo prontos em $outDir" 'Green'
-
-    # 7. Publicação com confirmação final
-    if ($publish) {
-        Write-Host ''
-        Write-Host "Publicar v$Version em $Repo $(if ($pre) {'(versão de TESTE)'})" -ForegroundColor Yellow
-        Write-Host "  $thc`n  $std" -ForegroundColor Yellow
-        $ok = Read-Host 'Digite PUBLICAR para confirmar'
-        if ($ok -ne 'PUBLICAR') { Log 'Publicação cancelada. Os pacotes locais foram mantidos.' 'Yellow' }
-        else {
-            $args2 = @('release', 'create', "v$Version", $thc, $std, (Join-Path $outDir 'SHA256SUMS.txt'), '--repo', $Repo, '--title', "Veyon Sync $Version", '--notes-file', $nf)
             if ($pre) { $args2 += '--prerelease' }
             if ((GhRun @args2) -ne 0) { throw 'gh release create falhou (veja a mensagem acima).' }
             Log "Release v$Version publicada em https://github.com/$Repo/releases/tag/v$Version" 'Green'
