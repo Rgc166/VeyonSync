@@ -1,0 +1,36 @@
+name: Windows CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build and test (.NET 10 / Windows x64)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install .NET SDK 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Show SDK
+        run: dotnet --info
+      - name: Restore solution
+        run: dotnet restore VeyonSync.sln
+      - name: Build solution
+        run: dotnet build VeyonSync.sln --configuration Release --no-restore
+      - name: Run automated tests
+        run: dotnet test tests/VeyonSync.Tests/VeyonSync.Tests.csproj --configuration Release --no-build --logger "console;verbosity=normal"
