@@ -37,12 +37,12 @@ jobs:
         shell: pwsh
         run: |
           $scripts = @("scripts/build.ps1", "scripts/publish.ps1")
-          foreach ($script in $scripts) {
+          foreach ($scriptPath in $scripts) {
             $tokens = $null
-            $errors = $null
-            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $script), [ref]$tokens, [ref]$errors) | Out-Null
-            if ($errors.Count -gt 0) {
-              $errors | ForEach-Object { Write-Error $_.Message }
+            $parseErrors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $scriptPath), [ref]$tokens, [ref]$parseErrors) | Out-Null
+            if ($parseErrors.Count -gt 0) {
+              $parseErrors | ForEach-Object { Write-Error $_.Message }
               exit 1
             }
           }
@@ -65,11 +65,9 @@ jobs:
           Add-Type -AssemblyName System.IO.Compression.FileSystem
           $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
           try {
-            $hasMenu = @($archive.Entries | Where-Object { $_.FullName -match '(^|[\\/])INICIAR\.bat
- }).Count -gt 0
-            $hasGuide = @($archive.Entries | Where-Object { $_.FullName -match '(^|[\\/])LEIA-ME\.txt
- }).Count -gt 0
-            if (-not $hasMenu -or -not $hasGuide) { throw "ZIP de instalação não contém o menu ou o tutorial." }
+            $hasMenu = @($archive.Entries | Where-Object { $_.FullName.EndsWith("INICIAR.bat", [StringComparison]::OrdinalIgnoreCase) }).Count -gt 0
+          $hasGuide = @($archive.Entries | Where-Object { $_.FullName.EndsWith("LEIA-ME.txt", [StringComparison]::OrdinalIgnoreCase) }).Count -gt 0
+          if (-not $hasMenu -or -not $hasGuide) { throw "ZIP de instalação não contém o menu ou o tutorial." }
           } finally {
             $archive.Dispose()
           }
