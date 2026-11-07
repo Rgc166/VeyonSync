@@ -6,7 +6,7 @@ where dotnet >nul 2>&1
 if errorlevel 1 goto nosdk
 dotnet --list-sdks | findstr /B "10." >nul
 if errorlevel 1 goto nosdk
-echo Compilando Veyon Sync 2.0 (pode levar alguns minutos na primeira vez)...
+echo Compilando Veyon Sync (pode levar alguns minutos na primeira vez)...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\build.ps1"
 if errorlevel 1 (
   echo.
