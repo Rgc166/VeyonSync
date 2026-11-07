@@ -1,172 +1,202 @@
 <div align="center">
-  <img src="docs/images/banner.svg" alt="Veyon Sync — organização dos computadores do laboratório" width="100%">
+  <img src="docs/images/banner.svg" alt="Veyon Sync — gestão de laboratórios escolares" width="100%">
+  <h2>Gestão dos computadores do laboratório, sem retrabalho.</h2>
 
-  **Windows x64 · C# · .NET 10 · WPF · Veyon**
-
-  [Visão geral](#visão-geral) · [Como funciona](#como-funciona) · [Instalação](#instalação) · [Atualizações](#atualizações) · [Segurança](#segurança) · [Documentação](#documentação)
+  <a href="https://github.com/Rgc166/VeyonSync/releases">
+    <img src="https://img.shields.io/badge/BAIXAR-Vers%C3%B5es%20oficiais-238636?style=for-the-badge&logo=github&logoColor=white" alt="Downloads oficiais">
+  </a>
+  <a href="https://github.com/Rgc166/VeyonSync/actions/workflows/ci.yml">
+    <img src="https://github.com/Rgc166/VeyonSync/actions/workflows/ci.yml/badge.svg?branch=main" alt="Windows CI">
+  </a>
+  <br>
+  <img src="https://img.shields.io/badge/c%C3%B3digo-2.2.0-8957e5?style=flat-square" alt="Versão 2.2.0">
+  <img src="https://img.shields.io/badge/Windows-x64-2671d8?style=flat-square&logo=windows&logoColor=white" alt="Windows x64">
+  <img src="https://img.shields.io/badge/.NET-10-512bd4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10">
+  <img src="https://img.shields.io/badge/interface-WPF-8250df?style=flat-square" alt="WPF">
+  <img src="https://img.shields.io/badge/integra%C3%A7%C3%A3o-Veyon-2da44e?style=flat-square" alt="Veyon">
 </div>
 
-> [!WARNING]
-> **Em fase de validação.** A compilação e os testes automatizados fazem parte do processo de build, mas isso não substitui a validação com o Veyon instalado e em uso real no laboratório. Antes de integrar todos os computadores, teste em um ambiente pequeno e confira a prévia.
+> [!IMPORTANT]
+> **Para instalar, use um pacote da página Releases.** O botão **Code → Download ZIP** baixa o código-fonte para desenvolvedores, não o instalador. A primeira Release oficial com o pacote completo será publicada após a validação do build e da assinatura no Windows do mantenedor.
 
 ## Visão geral
 
-O **Veyon Sync** automatiza a manutenção dos cadastros de computadores usados pelo [Veyon](https://veyon.io/) em laboratórios escolares.
+O **Veyon Sync** ajuda a manter o cadastro dos computadores de laboratórios escolares atualizado no [Veyon](https://veyon.io/).
 
-O serviço instalado nos computadores dos alunos identifica os dados necessários para o cadastro e os envia ao computador do professor. No THC, o responsável confere o inventário, revisa o que será alterado e decide quando aplicar as mudanças ao Veyon.
+Os computadores dos alunos enviam suas informações ao computador do professor. O responsável acompanha o inventário, revisa as alterações e decide quando integrá-las ao Veyon.
 
-A proposta é reduzir correções manuais quando um computador muda de endereço IP, nome ou posição no laboratório, mantendo o administrador no controle da integração.
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>THC · Professor</h3>
+      <p>Centraliza os computadores do laboratório.</p>
+      <ul><li>Inventário e histórico</li><li>Mapa do laboratório</li><li>Prévia e integração com o Veyon</li><li>Backups e restauração</li><li>Consulta de atualizações pelo GitHub</li></ul>
+    </td>
+    <td width="50%" valign="top">
+      <h3>STD · Aluno</h3>
+      <p>Identifica o computador e conversa com o professor.</p>
+      <ul><li>Coleta de nome, usuário, IP e MAC</li><li>Envio automático ou manual</li><li>Credenciamento por código temporário</li><li>Fila persistente e novas tentativas</li><li>Atualizações distribuídas pelo THC</li></ul>
+    </td>
+  </tr>
+</table>
+
+## Painel do projeto
+
+<table>
+  <tr>
+    <td align="center" width="25%"><strong>PRODUTO</strong><br><img src="https://img.shields.io/badge/THC%20%2B%20STD-2%20aplica%C3%A7%C3%B5es-7657e8?style=flat-square" alt="THC e STD"></td>
+    <td align="center" width="25%"><strong>PLATAFORMA</strong><br><img src="https://img.shields.io/badge/Windows-x64-2671d8?style=flat-square" alt="Windows x64"></td>
+    <td align="center" width="25%"><strong>ATUALIZAÇÃO</strong><br><img src="https://img.shields.io/badge/THC-GitHub-238636?style=flat-square" alt="THC atualiza pelo GitHub"></td>
+    <td align="center" width="25%"><strong>ALUNOS</strong><br><img src="https://img.shields.io/badge/STD-via%20THC-0e8a9d?style=flat-square" alt="STD atualizado pelo THC"></td>
+  </tr>
+</table>
+
+## Downloads oficiais
+
+<div align="center">
+  <h3>Primeira instalação</h3>
+  <a href="https://github.com/Rgc166/VeyonSync/releases">
+    <img src="https://img.shields.io/badge/⬇%20DOWNLOAD-Instalador%20completo-238636?style=for-the-badge" alt="Baixar instalador completo">
+  </a>
+  <p><strong>VeyonSync-Instalacao-win-x64.zip</strong></p>
+  <p>THC + STD + menu de instalação + tutorial offline.</p>
+  <p><a href="docs/GUIA-INSTALACAO.md">Ler o guia de instalação antes de começar</a></p>
+</div>
+
+### O que existe em cada download?
+
+| Arquivo | Para quem | O que contém |
+|---|---|---|
+| <code>VeyonSync-Instalacao-win-x64.zip</code> | Nova instalação | Pacote completo com professor, aluno e tutorial |
+| <code>VeyonSync-THC-x.y.z-win-x64.vsupd</code> | Atualização do professor | Pacote assinado exclusivo do THC |
+| <code>VeyonSync-STD-x.y.z-win-x64.vsupd</code> | Atualização dos alunos | Pacote assinado exclusivo do STD |
+| <code>SHA256SUMS.txt</code> | Conferência | Hashes dos arquivos publicados |
+
+> [!NOTE]
+> O instalador completo é preparado junto com os pacotes de atualização e anexado à mesma GitHub Release. Assim, a primeira instalação e o atualizador usam artefatos da mesma versão.
 
 ## Como funciona
 
-```mermaid
+~~~mermaid
 flowchart LR
-    subgraph ALUNOS[Computadores dos alunos]
-        STD1[STD · PC 01]
-        STD2[STD · PC 02]
-        STD3[STD · PC ...]
+    subgraph LAB["Computadores dos alunos"]
+        S1["STD · PC 01"]
+        S2["STD · PC 02"]
+        S3["STD · PC ..."]
     end
-
-    subgraph PROFESSOR[Computador do professor]
-        THC[THC · serviço e interface]
-        DB[(Inventário e histórico)]
-        CLI[veyon-cli]
-        VM[Veyon]
+    subgraph PROF["Computador do professor"]
+        T["THC · serviço e interface"]
+        DB[("Inventário e histórico")]
+        CLI["veyon-cli"]
+        VM["Veyon"]
+        GH["GitHub Releases"]
     end
-
-    STD1 -->|HTTPS| THC
-    STD2 -->|HTTPS| THC
-    STD3 -->|HTTPS| THC
-    THC --> DB
-    THC -->|Prévia e aplicação| CLI
+    S1 -->|HTTPS| T
+    S2 -->|HTTPS| T
+    S3 -->|HTTPS| T
+    T --> DB
+    T -->|Prévia e aplicação| CLI
     CLI --> VM
-```
+    GH -->|Atualização THC e pacote STD| T
+    T -->|Distribuição na rede| S1
+    T -->|Distribuição na rede| S2
+~~~
 
-1. **STD · Aluno:** coleta os dados do computador e envia as informações ao professor. O modo de envio pode ser automático ou manual.
+1. **STD · Aluno:** coleta os dados do computador e envia as informações ao professor.
 2. **THC · Professor:** recebe e valida os dados, mantém o inventário e registra o histórico.
 3. **Integração com o Veyon:** o administrador analisa a prévia e confirma a aplicação. O processo cria um backup antes de alterar o diretório do Veyon.
 
-## O que oferece
+## Instalação rápida
+
+1. Abra [Releases](https://github.com/Rgc166/VeyonSync/releases).
+2. Baixe <code>VeyonSync-Instalacao-win-x64.zip</code> da versão estável.
+3. Extraia o ZIP em uma pasta local ou pendrive.
+4. Execute <code>INICIAR.bat</code> como administrador.
+5. No computador do professor, escolha **[1] Instalar professor**.
+6. Nos computadores dos alunos, escolha **[2] Instalar aluno**.
+7. Gere o arquivo de ligação no THC, credencie cada STD e confira a prévia de integração com o Veyon.
+
+Os computadores do laboratório não precisam do .NET SDK. Ele é necessário apenas no computador utilizado para compilar o projeto.
+
+**Guia completo:** [Instalação passo a passo](docs/GUIA-INSTALACAO.md).
+
+## Atualizações pelo GitHub
+
+O fluxo foi pensado para uma rede escolar:
 
 | THC · Professor | STD · Aluno |
 |---|---|
-| Inventário e histórico dos computadores | Serviço em segundo plano do Windows |
-| Prévia de alterações antes de integrar ao Veyon | Envio automático ou manual, conforme a configuração |
-| Backup e opção de restauração da configuração do Veyon | Fila persistente e novas tentativas de envio |
-| Mapa do laboratório com organização visual dos PCs | Credenciamento por arquivo de ligação e código temporário |
-| Gestão central de mais de um laboratório | Atualização distribuída pelo professor |
-| Exportação de relatórios e registros | Interface de acompanhamento em português |
+| Consulta as GitHub Releases | Não acessa o GitHub |
+| Busca e instala sua própria atualização após confirmação | Recebe atualizações distribuídas pelo THC |
+| Baixa o pacote assinado do STD | Também pode ser atualizado por arquivo |
 
-## Instalação
+A busca automática, quando habilitada, apenas avisa que existe uma versão disponível. A instalação depende de uma ação do administrador.
 
-A instalação é feita a partir de um pacote preparado em um computador de desenvolvimento e copiado para um pendrive. Os computadores do laboratório recebem os aplicativos já publicados com o runtime incluído; não precisam ter o .NET SDK instalado.
-
-### 1. Preparar o pacote
-
-No computador usado para compilar:
-
-- Windows x64;
-- [.NET SDK 10 (x64)](https://dotnet.microsoft.com/download/dotnet/10.0);
-- cópia local deste repositório.
-
-Na pasta principal do projeto, execute:
-
-```powershell
-.\BUILD.bat
-```
-
-O script compila os serviços e as interfaces, executa os testes automatizados e prepara a pasta:
-
-```text
-dist\Pendrive\VeyonSync\
-```
-
-Se a compilação ou os testes falharem, o pacote não deve ser considerado pronto. Consulte **build-log.txt** para localizar o erro.
-
-### 2. Instalar no laboratório
-
-Copie a pasta **VeyonSync** gerada para o pendrive. Em cada computador, execute **INICIAR.bat**:
-
-| Opção | Onde usar | Finalidade |
-|---|---|---|
-| **1 · Instalar professor** | Um computador por laboratório | Instala o THC e o serviço do professor |
-| **2 · Instalar aluno** | Cada computador de aluno | Instala o STD e o serviço do aluno |
-| **3 · Aplicar atualização** | Computador já instalado | Atualiza o programa preservando os dados |
-
-O menu solicita a elevação de administrador quando necessário. Depois de instalar o professor, gere o arquivo de ligação no THC. Em cada aluno, importe esse arquivo, informe o número do PC e valide o código temporário gerado pelo professor.
-
-O procedimento completo está em [docs/TUTORIAL.txt](docs/TUTORIAL.txt).
-
-## Atualizações
-
-O projeto separa a preparação do instalador inicial da geração de versões de atualização.
-
-### Publicar uma nova versão
-
-Execute **PUBLICAR_UPDATE.bat** no computador de desenvolvimento. O processo compila, roda os testes, gera os pacotes THC e STD e assina os arquivos de atualização. É necessário ter o .NET SDK 10 e a chave privada do publicador, armazenada fora do repositório em **%USERPROFILE%\.veyonsync-release**.
-
-Para publicar no GitHub Releases, também é necessário instalar a [GitHub CLI](https://cli.github.com), autenticar com **gh auth login** e confirmar a publicação no próprio script.
-
-### Gerar pacotes para transferência por arquivo
-
-Execute **GERAR_ZIPS_UPDATE.bat** para preparar os arquivos de entrega em **dist\Entrega\\<versão>\\**:
-
-- ZIP de atualização do THC, destinado ao computador do professor;
-- ZIP de atualização do STD, destinado aos computadores dos alunos;
-- ZIP de recuperação, com os recursos para verificação e restauração manual.
-
-Os pacotes de atualização são assinados e verificados antes da entrega. Atualize primeiro o professor e depois os alunos.
-
-Consulte [docs/ATUALIZACOES.txt](docs/ATUALIZACOES.txt) para o fluxo completo e as condições de compatibilidade.
+**Guia:** [Como atualizar o Veyon Sync](docs/GUIA-ATUALIZACAO.md).
 
 ## Segurança
 
-- A comunicação entre os alunos e o professor usa HTTPS com certificado do professor fixado no cliente.
-- O credenciamento utiliza um código temporário de oito dígitos, com validade limitada e uso único.
-- A comunicação entre a interface e o serviço do professor usa Named Pipes com acesso restrito a administradores.
-- A integração com o Veyon é feita pelo **veyon-cli**; o projeto não usa o comando **networkobjects clear** e preserva os cadastros que não gerencia.
-- Os pacotes de atualização são assinados com ECDSA P-256 e verificados antes da instalação.
-- A chave privada do publicador não deve ser colocada no repositório. A chave pública em **assets/release-public-key.txt** pode ser versionada.
+- Comunicação entre alunos e professor por HTTPS com certificado do professor fixado no cliente.
+- Código de credenciamento temporário, de uso único e com validade limitada.
+- Comunicação entre interface e serviço por Named Pipes com acesso restrito a administradores.
+- Integração com o Veyon pelo <code>veyon-cli</code>; o projeto não utiliza <code>networkobjects clear</code>.
+- Pacotes de atualização assinados com ECDSA P-256 e conferidos antes da instalação.
+- Chave privada do publicador mantida fora do repositório, em <code>%USERPROFILE%\.veyonsync-release</code>.
 
-O STD envia ao professor informações de identificação e rede do computador, como nome da máquina, usuário, IP e MAC. Instale e utilize o sistema somente em laboratórios nos quais você tenha autorização para administrar esses dados.
-
-## Limitações conhecidas
-
-- O estado de disponibilidade no Veyon Master não é medido pelo STD; essa informação aparece como **não verificada**.
-- A troca de posição entre duas máquinas no mesmo lote pode ser sinalizada como conflito pelo Veyon e exigir ajuste manual.
-- O mapa visual do laboratório não reorganiza a disposição exibida pelo Veyon Master.
-- A atualização pelo GitHub Releases requer um repositório público nesta versão; repositórios privados não são suportados pelo atualizador.
-- A compatibilidade visual foi planejada para telas a partir de 1366 × 768, mas deve ser conferida nos monitores usados no laboratório.
-
-## Estrutura do projeto
-
-```text
-Shared/        Modelos, TLS, IPC, assinatura e componentes comuns
-Teacher/       Serviço do professor, banco SQLite e integração com o Veyon
-Student/       Serviço do aluno, coleta, pareamento e envio
-Desktop/       Tema e componentes WPF compartilhados
-TeacherApp/    Interface WPF do professor (THC)
-StudentApp/    Interface WPF do aluno (STD)
-scripts/       Compilação, instalação, atualização e publicação
-pendrive/      Menu e arquivos preparados para o pendrive
-recuperacao/   Verificação e restauração manual
-assets/        Recursos visuais e chave pública de atualização
-tests/         Testes automatizados (xUnit)
-tools/         Ferramentas de geração e validação dos pacotes
-docs/          Tutorial, atualizações e histórico de mudanças
-```
+O STD envia informações necessárias à identificação do computador, como nome da máquina, usuário, IP e MAC. Utilize a ferramenta somente em equipamentos e redes que você tenha autorização para administrar.
 
 ## Documentação
 
-- [Tutorial de instalação e uso](docs/TUTORIAL.txt)
-- [Sistema de atualizações](docs/ATUALIZACOES.txt)
-- [Mudanças da versão 2.2](docs/MUDANCAS-2.2.txt)
-- [Orientações para trabalhar com o GitHub](docs/GITHUB.md)
+<details>
+  <summary><strong>Para quem vai instalar e administrar</strong></summary>
 
-## Tecnologias
+  - [Guia de instalação](docs/GUIA-INSTALACAO.md)
+  - [Guia de atualização pelo GitHub](docs/GUIA-ATUALIZACAO.md)
+  - [Tutorial detalhado offline](docs/TUTORIAL.txt)
+  - [Sistema de atualizações e compatibilidade](docs/ATUALIZACOES.txt)
+
+</details>
+
+<details>
+  <summary><strong>Para desenvolvedores e mantenedores</strong></summary>
+
+  - [Publicação e distribuição](docs/DISTRIBUICAO.md)
+  - [Orientações para trabalhar com o GitHub](docs/GITHUB.md)
+  - [Mudanças da versão 2.2](docs/MUDANCAS-2.2.txt)
+
+</details>
+
+## Estrutura técnica
+
+~~~text
+Shared/        Modelos, TLS, IPC, assinatura e componentes comuns
+Desktop/       Tema e componentes WPF compartilhados
+Teacher/       Serviço do professor, SQLite e integração Veyon
+TeacherApp/    Interface WPF do professor (THC)
+Student/       Serviço do aluno, coleta, pareamento e envio
+StudentApp/    Interface WPF do aluno (STD)
+scripts/       Compilação, instalação, atualização e publicação
+pendrive/      Menu e arquivos preparados para instalação
+recuperacao/   Verificação e restauração manual
+assets/        Recursos visuais, chave pública e repositório padrão
+tests/         Testes automatizados (xUnit)
+tools/         Ferramentas de geração e validação dos pacotes
+docs/          Guias de uso, manutenção e histórico
+.github/       Integração contínua no Windows
+~~~
+
+### Tecnologias
 
 C# · .NET 10 · WPF · ASP.NET Core · SQLite · PowerShell · Veyon
 
-## Licença
+### Limitações conhecidas
 
-Este repositório ainda não possui uma licença de código aberto. Até que uma licença seja adicionada, todos os direitos permanecem reservados ao autor; a publicação do código não concede automaticamente permissão para reutilização ou redistribuição.
+- A disponibilidade no Veyon Master não é medida pelo STD; aparece como não verificada.
+- Trocas de posição entre máquinas no mesmo lote podem exigir ajuste manual de conflitos no Veyon.
+- O mapa visual do laboratório não reorganiza a disposição mostrada pelo Veyon Master.
+- O atualizador por GitHub Releases exige repositório público nesta versão.
+- A interface foi planejada para telas a partir de 1366 × 768; valide nos monitores usados no laboratório.
+
+### Licença
+
+Este repositório ainda não possui uma licença de código aberto. Até que uma licença seja definida, todos os direitos permanecem reservados ao autor. A publicação do código não concede automaticamente permissão de reutilização ou redistribuição.

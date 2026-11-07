@@ -47,6 +47,8 @@ Get-ChildItem "$r\scripts\*.ps1" | Where-Object { $_.Name -ne 'build.ps1' } | Fo
 Copy-Item "$r\pendrive\INICIAR.bat" $out -Force
 Copy-Item "$r\docs\TUTORIAL.txt" (Join-Path $out 'LEIA-ME.txt') -Force
 Copy-Item "$r\docs\ATUALIZACOES.txt" (Join-Path $out 'ATUALIZACOES.txt') -Force
+Copy-Item "$r\docs\GUIA-INSTALACAO.md" (Join-Path $out 'GUIA-INSTALACAO.md') -Force
+Copy-Item "$r\docs\GUIA-ATUALIZACAO.md" (Join-Path $out 'GUIA-ATUALIZACAO.md') -Force
 Copy-Item "$r\pendrive\Ligacoes-LEIA-ME.txt" (Join-Path $out 'Ligacoes\LEIA-ME.txt') -Force
 Copy-Item "$r\pendrive\Atualizacoes-LEIA-ME.txt" (Join-Path $out 'Atualizacoes\LEIA-ME.txt') -Force
 # Kit de prevenção/recuperação da atualização por arquivo (somente scripts).
