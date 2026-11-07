@@ -9,7 +9,7 @@
     <img src="https://github.com/Rgc166/VeyonSync/actions/workflows/ci.yml/badge.svg?branch=main" alt="Windows CI">
   </a>
   <br>
-  <img src="https://img.shields.io/badge/c%C3%B3digo-2.2.0-8957e5?style=flat-square" alt="Versão 2.2.0">
+  <img src="https://img.shields.io/badge/c%C3%B3digo-2.2.1-8957e5?style=flat-square" alt="Versão 2.2.0">
   <img src="https://img.shields.io/badge/Windows-x64-2671d8?style=flat-square&logo=windows&logoColor=white" alt="Windows x64">
   <img src="https://img.shields.io/badge/.NET-10-512bd4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10">
   <img src="https://img.shields.io/badge/interface-WPF-8250df?style=flat-square" alt="WPF">
