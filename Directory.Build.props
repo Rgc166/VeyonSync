@@ -1,7 +1,7 @@
 <Project>
   <!-- Versão única do produto. O PUBLICAR_UPDATE.bat/BUILD passam -p:VeyonSyncVersion=X.Y.Z. -->
   <PropertyGroup>
-    <VeyonSyncVersion Condition="'$(VeyonSyncVersion)' == ''">2.2.0</VeyonSyncVersion>
+    <VeyonSyncVersion Condition="'$(VeyonSyncVersion)' == ''">2.2.1</VeyonSyncVersion>
     <Version>$(VeyonSyncVersion)</Version>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>

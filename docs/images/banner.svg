@@ -15,7 +15,7 @@
 <g transform="translate(20 66)">
 <rect width="198" height="78" rx="10" fill="#191f34" stroke="#3d355e"/><text x="15" y="23" fill="#9a8bff" font-size="10" font-weight="700">THC · PROFESSOR</text><text x="15" y="52" fill="#f5f7ff" font-size="24" font-weight="800">THC</text><text x="70" y="51" fill="#8492aa" font-size="11">central controller</text>
 <rect x="213" width="198" height="78" rx="10" fill="#142530" stroke="#275465"/><text x="228" y="23" fill="#57d1e0" font-size="10" font-weight="700">STD · STUDENTS</text><text x="228" y="52" fill="#f5f7ff" font-size="24" font-weight="800">STD</text><text x="282" y="51" fill="#8492aa" font-size="11">student agents</text>
-<rect x="426" width="214" height="78" rx="10" fill="#18283a" stroke="#324b66"/><text x="441" y="23" fill="#8db9ff" font-size="10" font-weight="700">PRODUCT VERSION</text><text x="441" y="52" fill="#f5f7ff" font-size="24" font-weight="800">2.2.0</text><text x="512" y="51" fill="#8492aa" font-size="11">release card</text>
+<rect x="426" width="214" height="78" rx="10" fill="#18283a" stroke="#324b66"/><text x="441" y="23" fill="#8db9ff" font-size="10" font-weight="700">PRODUCT VERSION</text><text x="441" y="52" fill="#f5f7ff" font-size="24" font-weight="800">2.2.1</text><text x="512" y="51" fill="#8492aa" font-size="11">release card</text>
 </g>
 <g transform="translate(20 163)">
 <rect width="395" height="112" rx="10" fill="#151d2e" stroke="#303a52"/><text x="15" y="23" fill="#c6d0e2" font-size="11" font-weight="700">ACTIVITY OVERVIEW</text><text x="326" y="23" fill="#7887a0" font-size="9">ILLUSTRATION</text>

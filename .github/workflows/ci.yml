@@ -33,3 +33,41 @@ jobs:
         run: dotnet build VeyonSync.sln --configuration Release --no-restore
       - name: Run automated tests
         run: dotnet test tests/VeyonSync.Tests/VeyonSync.Tests.csproj --configuration Release --no-build --logger "console;verbosity=normal"
+      - name: Validate PowerShell publishing scripts
+        shell: pwsh
+        run: |
+          $scripts = @("scripts/build.ps1", "scripts/publish.ps1")
+          foreach ($scriptPath in $scripts) {
+            $tokens = $null
+            $parseErrors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $scriptPath), [ref]$tokens, [ref]$parseErrors) | Out-Null
+            if ($parseErrors.Count -gt 0) {
+              $parseErrors | ForEach-Object { Write-Error $_.Message }
+              exit 1
+            }
+          }
+      - name: Build portable installation bundle
+        shell: pwsh
+        run: ./scripts/build.ps1 -SkipTests
+      - name: Verify portable bundle and tutorial
+        shell: pwsh
+        run: |
+          $root = Join-Path $PWD "dist/Pendrive/VeyonSync"
+          $required = @("INICIAR.bat", "LEIA-ME.txt", "Teacher/VeyonSync.Teacher.exe", "Student/VeyonSync.Student.exe", "GUIA-INSTALACAO.md", "GUIA-ATUALIZACAO.md")
+          foreach ($item in $required) {
+            if (-not (Test-Path (Join-Path $root $item))) {
+              Write-Error "Arquivo obrigatório ausente no pacote: $item"
+              exit 1
+            }
+          }
+          $zip = Join-Path $env:RUNNER_TEMP "VeyonSync-Instalacao-win-x64.zip"
+          Compress-Archive -Path $root -DestinationPath $zip -CompressionLevel Optimal
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $archive = [System.IO.Compression.ZipFile]::OpenRead($zip)
+          try {
+            $hasMenu = @($archive.Entries | Where-Object { $_.FullName.EndsWith("INICIAR.bat", [StringComparison]::OrdinalIgnoreCase) }).Count -gt 0
+          $hasGuide = @($archive.Entries | Where-Object { $_.FullName.EndsWith("LEIA-ME.txt", [StringComparison]::OrdinalIgnoreCase) }).Count -gt 0
+          if (-not $hasMenu -or -not $hasGuide) { throw "ZIP de instalação não contém o menu ou o tutorial." }
+          } finally {
+            $archive.Dispose()
+          }
