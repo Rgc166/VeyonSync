@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>VeyonSync.Teacher</AssemblyName>
+    <RootNamespace>VeyonSync.Teacher</RootNamespace>
+    <Product>Veyon Sync THC</Product>
+    <ApplicationIcon Condition="Exists('..\assets\icons\thc.ico')">..\assets\icons\thc.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+    <ProjectReference Include="../Shared/Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="VeyonSync.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- appsettings.json real fica na instalação (Lab, Port, Thumbprint) e nunca é sobrescrito por atualização. -->
+    <Content Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+</Project>

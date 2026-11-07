@@ -1,0 +1,11 @@
+bin/
+obj/
+dist/
+build-log.txt
+*.user
+# Segredos nunca vão para o repositório (a chave privada fica em %USERPROFILE%\.veyonsync-release)
+*.key
+*.pfx
+
+.vs/
+*.log

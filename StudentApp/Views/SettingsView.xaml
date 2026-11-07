@@ -1,0 +1,103 @@
+<UserControl x:Class="VeyonSync.StudentApp.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="SettingCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Width" Value="430"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Margin="28,14,16,16">
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBlock Style="{StaticResource H1}" Text="Configurações"/>
+            <TextBlock Style="{StaticResource Muted}" Text="Ajuste o envio deste computador e outras preferências."/>
+        </StackPanel>
+
+        <Border DockPanel.Dock="Bottom" Style="{StaticResource Card}" Padding="14,10" Margin="0,8,12,0">
+            <DockPanel>
+                <WrapPanel DockPanel.Dock="Right">
+                    <Button Command="{Binding DiscardSettingsCmd}" Content="Descartar" Margin="0,0,8,0"/>
+                    <Button Style="{StaticResource PrimaryButton}" Command="{Binding SaveSettingsCmd}" Margin="0">
+                        <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE74E;" Margin="0,0,8,0"/><TextBlock Text="Salvar alterações"/></StackPanel>
+                    </Button>
+                </WrapPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Visibility="{Binding SettingsDirty, Converter={StaticResource Vis}}">
+                    <Ellipse Width="8" Height="8" Fill="{DynamicResource Warn}" Margin="0,0,8,0"/>
+                    <TextBlock Text="Alterações não salvas"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <WrapPanel>
+                <!-- Modo de envio: escolha única -->
+                <Border Style="{StaticResource SettingCard}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14"><TextBlock Style="{StaticResource Icon}" Text="&#xE898;" Foreground="{DynamicResource Accent}" Margin="0,0,10,0"/><TextBlock Style="{StaticResource H3}" Text="Modo de envio"/></StackPanel>
+                        <RadioButton GroupName="SendMode" IsChecked="{Binding AutoSend}">
+                            <StackPanel>
+                                <TextBlock FontWeight="SemiBold" Text="Automático (recomendado)"/>
+                                <TextBlock Style="{StaticResource Caption}" Text="Envia sozinho quando algo muda e de tempos em tempos."/>
+                            </StackPanel>
+                        </RadioButton>
+                        <Border Style="{StaticResource Inset}" Margin="30,0,0,10" IsEnabled="{Binding AutoSend}">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource Label}" Text="Enviar quando"/>
+                                <CheckBox IsChecked="{Binding SendOnStart}" Content="O Windows iniciar (com rede)"/>
+                                <CheckBox IsChecked="{Binding SendOnLogon}" Content="Alguém entrar no Windows"/>
+                                <CheckBox IsChecked="{Binding SendOnIpChange}" Content="O IP mudar"/>
+                                <TextBlock Style="{StaticResource Label}" Text="Sinal de presença a cada (segundos, 15 a 3600)" Margin="0,6,0,4"/>
+                                <TextBox Width="110" HorizontalAlignment="Left" Text="{Binding PresenceSeconds, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Intervalo de presença em segundos"/>
+                            </StackPanel>
+                        </Border>
+                        <RadioButton GroupName="SendMode" IsChecked="{Binding ManualMode}">
+                            <StackPanel>
+                                <TextBlock FontWeight="SemiBold" Text="Manual"/>
+                                <TextBlock Style="{StaticResource Caption}" Text="Envia somente quando alguém clicar em &quot;Coletar e enviar agora&quot;."/>
+                            </StackPanel>
+                        </RadioButton>
+                        <Border Background="{DynamicResource WarnSoft}" BorderBrush="{DynamicResource Warn}" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="30,0,0,0"
+                                Visibility="{Binding ManualMode, Converter={StaticResource Vis}}">
+                            <DockPanel>
+                                <TextBlock Style="{StaticResource Icon}" Text="&#xE7BA;" Foreground="{DynamicResource Warn}" Margin="0,0,8,0" VerticalAlignment="Top"/>
+                                <TextBlock Text="Sem presença periódica, sem envios por evento e sem novas tentativas em segundo plano. O professor vê este PC com o selo M e os dados podem ficar desatualizados. Pedidos de coleta do professor só são atendidos no próximo envio manual."/>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Vínculo -->
+                <Border Style="{StaticResource SettingCard}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14"><TextBlock Style="{StaticResource Icon}" Text="&#xE71B;" Foreground="{DynamicResource Accent}" Margin="0,0,10,0"/><TextBlock Style="{StaticResource H3}" Text="Vínculo com o professor"/></StackPanel>
+                        <TextBlock Style="{StaticResource Label}" Text="Professor"/>
+                        <TextBlock FontWeight="SemiBold" Text="{Binding TeacherText, Converter={StaticResource Dash}}" Margin="0,0,0,10"/>
+                        <TextBlock Style="{StaticResource Label}" Text="Laboratório"/>
+                        <TextBlock FontWeight="SemiBold" Margin="0,0,0,10"><Run Text="{Binding Status.LabName, Mode=OneWay}"/><Run Text=" ("/><Run Text="{Binding Status.Lab, Mode=OneWay}"/><Run Text=")"/></TextBlock>
+                        <TextBlock Style="{StaticResource Label}" Text="Número deste PC"/>
+                        <TextBlock FontWeight="SemiBold" Text="{Binding PositionText}" Margin="0,0,0,10"/>
+                        <TextBlock Style="{StaticResource Caption}" Margin="0,0,0,10">
+                            <Run Text="Credenciado: "/><Run Text="{Binding Status.Paired, Mode=OneWay}"/><Run Text=" · arquivo de ligação: "/><Run Text="{Binding Status.LinkImported, Mode=OneWay}"/><Run Text=" · certificado fixado: "/><Run Text="{Binding Status.CertificatePinned, Mode=OneWay}"/>
+                        </TextBlock>
+                        <Button HorizontalAlignment="Left" Command="{Binding GoCmd}" CommandParameter="5">
+                            <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE70F;" Margin="0,0,8,0"/><TextBlock Text="Alterar vínculo"/></StackPanel>
+                        </Button>
+                        <TextBlock Style="{StaticResource Caption}" Text="Ação administrativa: exige o arquivo de ligação e um código novo do professor. A identidade deste PC é preservada."/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Interface -->
+                <Border Style="{StaticResource SettingCard}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,14"><TextBlock Style="{StaticResource Icon}" Text="&#xE790;" Foreground="{DynamicResource Accent}" Margin="0,0,10,0"/><TextBlock Style="{StaticResource H3}" Text="Interface"/></StackPanel>
+                        <CheckBox IsChecked="{Binding Animations}" Content="Animações na interface"/>
+                        <TextBlock Style="{StaticResource Caption}" Text="Transições suaves; também respeitam a opção de animações do Windows. Aplicado na hora, só para este usuário."/>
+                        <TextBlock Style="{StaticResource Label}" Text="Informações administrativas" Margin="0,14,0,4"/>
+                        <TextBlock Style="{StaticResource Caption}"><Run Text="Nome do Windows: "/><Run Text="{Binding Status.WindowsName, Mode=OneWay}"/></TextBlock>
+                        <TextBlock Style="{StaticResource Caption}"><Run Text="Versão do STD: "/><Run Text="{Binding Status.Version, Mode=OneWay}"/></TextBlock>
+                        <TextBlock Style="{StaticResource Caption}" Text="O serviço funciona com esta janela fechada, antes do login e para qualquer usuário. Mudar o número do posto não renomeia o Windows."/>
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

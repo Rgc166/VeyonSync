@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Ferramenta do PC de desenvolvimento: gera a chave do publicador, monta e assina os pacotes .vsupd.
+       Nunca é distribuída aos laboratórios. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>VeyonSync.ReleaseTool</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.0" />
+    <ProjectReference Include="../../Shared/Shared.csproj" />
+  </ItemGroup>
+</Project>

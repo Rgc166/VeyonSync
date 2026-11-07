@@ -1,0 +1,5 @@
+Coloque aqui os arquivos de ligacao (.vsync) gerados no THC de cada laboratorio,
+por exemplo VeyonSync_LabA.vsync, VeyonSync_LabB.vsync, VeyonSync_LabC.vsync.
+
+O instalador do aluno oferece estes arquivos automaticamente.
+Eles contem somente dados publicos (endereco, laboratorio e certificado publico do professor).

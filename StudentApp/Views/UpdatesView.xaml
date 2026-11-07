@@ -1,0 +1,28 @@
+<UserControl x:Class="VeyonSync.StudentApp.Views.UpdatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="clr-namespace:VeyonSync.Desktop;assembly=VeyonSync.Desktop">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,14,16,24">
+            <TextBlock Style="{StaticResource H1}" Text="Atualizações"/>
+            <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,16"
+                       Text="Este computador recebe as atualizações do professor (THC). O aluno não acessa o GitHub. Credenciamento, número do PC, professor e configurações são preservados."/>
+
+            <!-- Atualização recebida do professor -->
+            <Border Style="{StaticResource Card}">
+                <DockPanel>
+                    <TextBlock Style="{StaticResource Icon}" Text="&#xE895;" FontSize="20" Foreground="{DynamicResource Accent}" Margin="0,0,14,0" VerticalAlignment="Top"/>
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource H3}" Text="Atualização recebida do professor"/>
+                        <TextBlock Text="{Binding UpdateStatusText}" Margin="0,4,0,0"/>
+                        <TextBlock Style="{StaticResource Caption}" Margin="0,6,0,0"
+                                   Text="O professor envia o pacote assinado; este computador confere assinatura, integridade e versão, faz backup e volta à versão anterior se a instalação falhar."/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Versão instalada, pacote local (mesmas validações) e último resultado -->
+            <d:ReleaseView DataContext="{Binding Release}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

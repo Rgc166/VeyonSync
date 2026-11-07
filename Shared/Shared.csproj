@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>VeyonSync.Shared</AssemblyName>
+    <RootNamespace>VeyonSync.Shared</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Chave PÚBLICA do publicador (gerada pelo PUBLICAR_UPDATE.bat) e repositório padrão: nada secreto. -->
+    <EmbeddedResource Include="..\assets\release-public-key.txt" Condition="Exists('..\assets\release-public-key.txt')" LogicalName="VeyonSync.PublisherKey" />
+    <EmbeddedResource Include="..\assets\github-repo.txt" Condition="Exists('..\assets\github-repo.txt')" LogicalName="VeyonSync.DefaultRepo" />
+  </ItemGroup>
+</Project>

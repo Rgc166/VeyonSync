@@ -1,0 +1,25 @@
+﻿VEYON SYNC — KIT DE PREVENÇÃO E RECUPERAÇÃO (atualização por arquivo)
+====================================================================
+
+Copie esta pasta inteira para o pendrive, junto com os ZIPs de atualização.
+
+ANTES DE ATUALIZAR (prevenção) — em cada PC
+1. Clique com o botão direito em VERIFICAR-ANTES-DE-ATUALIZAR.bat > Executar como administrador.
+2. Ele mostra: o que está instalado (professor/aluno), a versão em execução, o serviço,
+   o espaço livre (precisa de 2 GB), o serviço do Veyon e se existe uma atualização "travada".
+   Se houver trava antiga, ele pergunta se pode remover. Nada mais é alterado.
+3. O relatório TXT fica nesta pasta.
+
+SE A ATUALIZAÇÃO DER ERRADO
+• Normalmente não é preciso fazer nada: se a nova versão não subir em 90 s, o próprio
+  atualizador restaura programa E dados e volta para a versão anterior. Veja o resultado em
+  Atualizações > "Última atualização deste computador" e o log em
+  C:\ProgramData\VeyonSync\<Teacher|Student>\logs\atualizacao-*.txt
+• Se mesmo assim o programa não abrir ou o serviço não iniciar:
+  1. Rode RESTAURAR-VERSAO-ANTERIOR.bat como administrador.
+  2. Escolha professor ou aluno, escolha o backup (Enter = o mais recente) e digite RESTAURAR.
+  3. Ele guarda o estado atual antes (dá para desfazer), restaura programa e dados
+     (banco, configurações, credenciamento, certificados, histórico e mapa) e inicia o serviço.
+• Último recurso: pendrive com a pasta VeyonSync da versão anterior > INICIAR.bat > [3].
+
+O Windows nunca é reiniciado por estes scripts. Nenhuma senha, token ou chave é gravada nos logs.

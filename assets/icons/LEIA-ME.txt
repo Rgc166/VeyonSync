@@ -1,0 +1,8 @@
+﻿Ícones definitivos (ainda não fornecidos):
+
+  thc.ico  -> Veyon Sync THC (professor)
+  std.ico  -> Veyon Sync STD (aluno)
+
+Coloque os arquivos .ico aqui (ideal: 16, 24, 32, 48 e 256 px) e rode o BUILD.bat.
+Eles passam a ser usados nos executáveis, nas janelas e nos atalhos criados pelos instaladores.
+Sem eles, o Windows usa o ícone padrão do executável.

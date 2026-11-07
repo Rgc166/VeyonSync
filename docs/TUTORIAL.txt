@@ -1,0 +1,71 @@
+﻿VEYON SYNC 2.0 — TUTORIAL RÁPIDO
+=================================
+
+Veyon Sync THC — Professor : recebe os dados dos alunos, mantém inventário/histórico e atualiza o Veyon.
+Veyon Sync STD — Aluno     : identifica o PC (nome, usuário, IP, MAC, posição) e envia ao professor.
+
+Tudo começa pelo INICIAR.bat desta pasta (pede permissão de administrador sozinho).
+Os programas são instalados no computador: pode retirar o pendrive depois.
+Cada instalação gera um log TXT na pasta "logs" (ou em C:\ProgramData\VeyonSync\logs).
+
+
+1) PROFESSOR (uma vez por laboratório)
+--------------------------------------
+1. INICIAR.bat > [1] Instalar professor. Informe o laboratório (A, B ou C).
+2. Abra "Veyon Sync THC - Professor" (menu Iniciar ou Área de Trabalho).
+3. Credenciamento > confira laboratório, endereço e nomes do certificado.
+   Se houver aviso (ex.: o PC foi renomeado de PROFESSOR-LAB-A para PROFESSOR-LAB-B),
+   reinstale o professor e aceite gerar um novo certificado.
+4. Clique em "Gerar arquivo de ligação" e salve o .vsync na pasta Ligacoes do pendrive.
+5. Configurações > escolha o padrão do nome no Veyon (nome real, "PC 01" ou "LAB-B-PC01").
+
+
+2) ALUNOS (cada PC)
+-------------------
+1. No professor: Credenciamento > "Gerar código de credenciamento" (8 dígitos, vale 15 min, uso único).
+2. No aluno: INICIAR.bat > [2] Instalar aluno. Aceite o arquivo de ligação do laboratório.
+3. O STD abre sozinho: informe só o número do PC (ex.: 3) e o código. Clique "Validar, parear e enviar".
+4. O resultado mostrado é o retorno real do professor ("Confirmado pelo professor").
+   Precisa de outro código? Gere de novo no THC (o anterior deixa de valer).
+
+
+3) VEYON (no professor)
+-----------------------
+- Integração Veyon > "Prévia" mostra o que será adicionado/atualizado e os conflitos.
+- "Integrar todos os pendentes" pede UMA confirmação, faz backup e aplica pelo veyon-cli.
+- Conflitos (ex.: registro antigo com o mesmo IP e outro MAC) não são alterados: corrija no
+  Veyon Configurator e use "Tentar novamente só as falhas".
+- Vários laboratórios: em cada THC gere um código; no THC central use
+  "Adicionar professor de outro laboratório" (arquivo .vsync daquele lab + código).
+  Depois "Integrar todos (selecionados)": cada professor aplica no próprio Veyon.
+- Restaurar backup: escolha o backup e confirme (só afeta este laboratório).
+- O Veyon Master pode precisar ser reaberto para mostrar os novos dados.
+
+
+4) MAPA DO LABORATÓRIO
+----------------------
+Mapa do laboratório > Editar mapa > Gerar fileiras (ex.: 5,6,6,6) > arraste os PCs
+ou use "Posicionar pelo número do PC" > Salvar mapa. Clique num cartão para ver detalhes.
+
+
+5) ATUALIZAR
+------------
+- Pelo pendrive (qualquer PC): INICIAR.bat > [3] Aplicar atualização. Faz backup, para o serviço,
+  atualiza, reinicia e confere. Se falhar, volta à versão anterior. Dados são preservados.
+- Pela rede (alunos com STD 2.0 já credenciado): THC > Atualizações > Selecionar pacote
+  (Atualizacoes\STD-x.y.z.zip) > marcar destinos > Distribuir. PCs desligados recebem depois.
+
+
+6) PROBLEMAS COMUNS
+-------------------
+- "Certificado não confere / não inclui o nome": gere novo arquivo de ligação no THC e reimporte
+  no aluno (STD > Credenciamento > Escolher arquivo). O pareamento é mantido.
+- "Professor inacessível": confira se o PC do professor está ligado, na mesma rede, e se o nome
+  dele resolve na rede (ping NOME-DO-PROFESSOR).
+- "Posição já registrada": outro PC usa o mesmo número. Corrija o número ou, no THC,
+  Computadores > Remover registro do PC antigo.
+- Sem comunicação recente NÃO significa PC desligado; modo manual só envia quando alguém pede.
+- Logs de instalação: pasta logs. Logs de atualização do aluno: C:\ProgramData\VeyonSync\Student\logs.
+
+Backups automáticos ficam em C:\ProgramData\VeyonSync\backups (instalações) e
+C:\ProgramData\VeyonSync\Teacher\VeyonBackups (configuração do Veyon).

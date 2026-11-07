@@ -1,0 +1,75 @@
+<UserControl x:Class="VeyonSync.StudentApp.Views.PairingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,14,16,24" MaxWidth="760" HorizontalAlignment="Left">
+            <TextBlock Style="{StaticResource H1}" Text="Credenciar este computador"/>
+            <TextBlock Style="{StaticResource Muted}" Margin="0,0,0,16"
+                       Text="Use o arquivo de ligação do laboratório e o código temporário gerado no professor (THC). O arquivo preenche professor e laboratório; o código autoriza."/>
+
+            <!-- 1. Arquivo -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <Border Width="30" Height="30" CornerRadius="15" Background="{DynamicResource Primary}" Margin="0,0,12,0">
+                            <TextBlock Text="1" FontWeight="Bold" Foreground="{DynamicResource OnPrimary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Style="{StaticResource H3}" Text="Importar arquivo de ligação (.vsync)" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Left" Command="{Binding PickLinkCmd}">
+                        <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE8E5;" Margin="0,0,8,0"/><TextBlock Text="Escolher arquivo"/></StackPanel>
+                    </Button>
+                    <Border Style="{StaticResource Inset}" Margin="0,4,0,0" Visibility="{Binding LinkLoaded, Converter={StaticResource Vis}}">
+                        <UniformGrid Columns="2">
+                            <StackPanel Margin="0,0,12,6"><TextBlock Style="{StaticResource Label}" Text="Professor"/><TextBlock FontWeight="SemiBold" Text="{Binding LinkTeacher}"/></StackPanel>
+                            <StackPanel Margin="0,0,12,6"><TextBlock Style="{StaticResource Label}" Text="Laboratório"/><TextBlock FontWeight="SemiBold" Text="{Binding LinkLab}"/></StackPanel>
+                            <StackPanel Margin="0,0,12,0"><TextBlock Style="{StaticResource Label}" Text="Endereço"/><TextBlock Text="{Binding LinkUrl}"/></StackPanel>
+                        </UniformGrid>
+                    </Border>
+                    <TextBlock Style="{StaticResource Caption}" Margin="0,8,0,0" Visibility="{Binding Status.LinkImported, Converter={StaticResource Vis}}">
+                        <Run Text="Ligação atual: "/><Run Text="{Binding TeacherText, Mode=OneWay}"/><Run Text=" · "/><Run Text="{Binding Status.LabName, Mode=OneWay}"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <!-- 2 e 3. Número e código -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <Border Width="30" Height="30" CornerRadius="15" Background="{DynamicResource Primary}" Margin="0,0,12,0">
+                            <TextBlock Text="2" FontWeight="Bold" Foreground="{DynamicResource OnPrimary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Style="{StaticResource H3}" Text="Número do PC e código do professor" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <WrapPanel>
+                        <StackPanel Margin="0,0,16,0">
+                            <TextBlock Style="{StaticResource Label}" Text="Número deste PC (ex.: 3 ou PC03)"/>
+                            <TextBox Width="180" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Número deste PC"/>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource Label}" Text="Código de credenciamento (8 dígitos)"/>
+                            <TextBox Width="180" MaxLength="9" FontFamily="Consolas" FontSize="16" Text="{Binding Code, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Código de credenciamento"/>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Button Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Margin="0,8,0,0" Command="{Binding PairCmd}" Padding="18,10">
+                        <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE73E;" Margin="0,0,8,0"/><TextBlock Text="Credenciar computador"/></StackPanel>
+                    </Button>
+                    <ProgressBar IsIndeterminate="True" Margin="0,4,0,8" Visibility="{Binding Busy, Converter={StaticResource Vis}}"/>
+                    <Border CornerRadius="8" Padding="14,10" Margin="0,6,0,0" BorderThickness="1"
+                            Background="{Binding PairKind, Converter={StaticResource KindSoft}}" BorderBrush="{Binding PairKind, Converter={StaticResource KindBrush}}"
+                            Visibility="{Binding PairMessage, Converter={StaticResource TextVis}}">
+                        <DockPanel>
+                            <TextBlock Style="{StaticResource Icon}" Margin="0,0,10,0" VerticalAlignment="Top"
+                                       Text="{Binding PairKind, Converter={StaticResource KindGlyph}}" Foreground="{Binding PairKind, Converter={StaticResource KindBrush}}"/>
+                            <TextBlock Text="{Binding PairMessage}"/>
+                        </DockPanel>
+                    </Border>
+                    <Button Style="{StaticResource GhostButton}" HorizontalAlignment="Left" Margin="0,10,0,0" Content="Ir para a visão geral" Command="{Binding GoCmd}" CommandParameter="0"
+                            Visibility="{Binding PairOk, Converter={StaticResource Vis}}"/>
+                </StackPanel>
+            </Border>
+            <TextBlock Style="{StaticResource Caption}"
+                       Text="Se aparecer erro de certificado ou de laboratório, confira se o arquivo é do laboratório certo e gere um código novo no THC. Trocar de professor exige confirmação do administrador; a identidade e os dados deste PC são preservados."/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

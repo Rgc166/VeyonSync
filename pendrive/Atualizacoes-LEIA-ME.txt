@@ -1,0 +1,3 @@
+STD-x.y.z.zip = pacote para atualizar alunos pela rede (THC > Atualizacoes > Selecionar pacote).
+A atualizacao pela rede so funciona em alunos que ja tem o STD 2.0 instalado e credenciado.
+Para atualizar este PC pelo pendrive, use INICIAR.bat > [3] Aplicar atualizacao.

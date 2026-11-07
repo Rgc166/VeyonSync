@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>VeyonSync.Student.App</AssemblyName>
+    <RootNamespace>VeyonSync.StudentApp</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Product>Veyon Sync STD</Product>
+    <AssemblyTitle>Veyon Sync STD — Aluno</AssemblyTitle>
+    <ApplicationIcon Condition="Exists('..\assets\icons\std.ico')">..\assets\icons\std.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Shared/Shared.csproj" />
+    <ProjectReference Include="../Desktop/Desktop.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\icons\std.ico" Condition="Exists('..\assets\icons\std.ico')" Link="icon.ico" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

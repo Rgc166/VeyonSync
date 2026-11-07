@@ -1,0 +1,72 @@
+<UserControl x:Class="VeyonSync.TeacherApp.Views.HistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Margin="28,14,16,16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <WrapPanel DockPanel.Dock="Right" VerticalAlignment="Top">
+                <Button Command="{Binding ExportHistoryCmd}" ToolTip="Exporta os eventos filtrados (CSV ou PDF)">
+                    <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE896;" Margin="0,0,8,0"/><TextBlock Text="Exportar CSV / PDF"/></StackPanel>
+                </Button>
+            </WrapPanel>
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock Style="{StaticResource H1}" Text="Histórico"/>
+                <TextBlock Style="{StaticResource Muted}"><Run Text="Eventos do laboratório · "/><Run Text="{Binding HistoryCountText, Mode=OneWay}"/></TextBlock>
+            </StackPanel>
+        </DockPanel>
+
+        <WrapPanel DockPanel.Dock="Top">
+            <StackPanel Margin="0,0,0,0">
+                <TextBlock Style="{StaticResource Label}" Text="Período"/>
+                <ComboBox Width="170" ItemsSource="{Binding Periods}" SelectedItem="{Binding HPeriod}" AutomationProperties.Name="Período"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding CustomPeriod, Converter={StaticResource Vis}}">
+                <StackPanel><TextBlock Style="{StaticResource Label}" Text="De (dd/mm/aaaa)"/><TextBox Width="120" Text="{Binding HFrom, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Data inicial"/></StackPanel>
+                <StackPanel><TextBlock Style="{StaticResource Label}" Text="Até (dd/mm/aaaa)"/><TextBox Width="120" Text="{Binding HTo, UpdateSourceTrigger=PropertyChanged}" AutomationProperties.Name="Data final"/></StackPanel>
+                <Button Style="{StaticResource PrimaryButton}" Command="{Binding LoadHistoryCmd}" Content="Aplicar" VerticalAlignment="Bottom"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Style="{StaticResource Label}" Text="Computador"/>
+                <ComboBox Width="230" ItemsSource="{Binding MachineChoices}" SelectedItem="{Binding HMachine}" AutomationProperties.Name="Computador"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Style="{StaticResource Label}" Text="Tipo"/>
+                <ComboBox Width="220" ItemsSource="{Binding KindChoices}" SelectedItem="{Binding HKind}" AutomationProperties.Name="Tipo de evento"/>
+            </StackPanel>
+            <Button Style="{StaticResource GhostButton}" Command="{Binding LoadHistoryCmd}" VerticalAlignment="Bottom" ToolTip="Recarregar">
+                <StackPanel Orientation="Horizontal"><TextBlock Style="{StaticResource Icon}" Text="&#xE72C;" FontSize="13" Margin="0,0,6,0"/><TextBlock Text="Atualizar"/></StackPanel>
+            </Button>
+        </WrapPanel>
+
+        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource Caption}" Margin="0,8,0,0"
+                   Text="Clique duas vezes em um evento para ver os detalhes. Mudanças de IP mostram o valor anterior e o novo."/>
+
+        <Border Style="{StaticResource Card}" Padding="0" Margin="0">
+            <DataGrid x:Name="HistGrid" ItemsSource="{Binding History}" SelectionMode="Single" Background="Transparent" MouseDoubleClick="OpenDetails" KeyDown="GridKey"
+                      AutomationProperties.Name="Eventos do histórico">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Data e hora" Binding="{Binding Ts, Converter={StaticResource Time}}" SortMemberPath="Ts" Width="150"/>
+                    <DataGridTextColumn Header="Computador" Binding="{Binding Machine, Converter={StaticResource Dash}}" Width="150"/>
+                    <DataGridTemplateColumn Header="Evento" Width="210" SortMemberPath="Kind">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource Icon}" FontSize="12" Margin="0,0,8,0" Text="{Binding Result, Converter={StaticResource Glyph}}" Foreground="{Binding Result, Converter={StaticResource Glyph}, ConverterParameter=brush}"/>
+                                    <TextBlock Text="{Binding Kind}" TextWrapping="NoWrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Descrição" Binding="{Binding Detail}" Width="*" ElementStyle="{StaticResource WrapCell}"/>
+                    <DataGridTemplateColumn Width="90" CanUserSort="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource GhostButton}" Content="Detalhes" Padding="8,3" MinHeight="26" Margin="0"
+                                        Command="{Binding DataContext.HistoryDetailsCmd, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </DockPanel>
+</UserControl>

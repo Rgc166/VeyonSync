@@ -1,0 +1,67 @@
+﻿VEYON SYNC 2.2 — O QUE MUDOU
+============================
+
+VISUAL (WPF, mesma arquitetura, sem trocar de tecnologia)
+• Tema compartilhado (Desktop\Theme.xaml): THC azul/ciano (#0B1220/#111C2E/#2563EB/#22D3EE),
+  STD laranja/amarelo (#15120F/#211B16/#F97316/#FACC15), cantos de 8–12 px, ícones vetoriais
+  (Segoe MDL2), estados de foco/hover/pressionado/desabilitado, rolagem fina, abas, segmentos,
+  rádios, interruptores, cartões clicáveis.
+• Barra lateral recolhível (dicas nos ícones quando recolhida), indicação de administrador,
+  laboratório/PC no topo e versão discreta. Janela se ajusta a 1366×768 com 125%/150%.
+• Confirmações, detalhes e caixas de texto no tema (sem a caixa padrão do Windows).
+  Sucesso aparece e some; erro fica visível até fechar.
+• Animações de 150–250 ms, desligáveis em Configurações e respeitando o Windows.
+
+THC
+• Visão geral: cartões clicáveis (cadastrados, comunicação recente, pendentes de integração,
+  erros ativos — "0 erros" fica verde), coleta com progresso e contadores reais, resumo do mapa
+  e atividade recente sem as comunicações periódicas.
+• Coleta solicitada correlacionada: cada pedido tem identificação; só conta como resposta o envio
+  feito por causa do pedido (agente 2.2: motivo "coleta solicitada"; agente 2.1: o envio que vem
+  depois do pedido entregue). Separado em respondidos, aguardando, modo manual e sem resposta no
+  prazo. Nunca mostra sucesso total com pendências.
+• Computadores: seleção individual e em lote, busca, filtros, ordenação por coluna, coluna de
+  coleta, selo M de envio manual, painel lateral do computador (hostname, usuário, IP, MAC,
+  versão, última comunicação, modo de envio, integração, erros ativos e ações).
+• Mapa: fileiras em colunas verticais, modos Visualizar/Editar disposição, arrastar e soltar,
+  salvar/cancelar, zoom. Comunicação (bolinha), integração (ícone) e envio manual (M) separados.
+• Credenciamento: arquivo de ligação e código lado a lado (copiar endereço/código, validade).
+• Histórico: período, computador e tipo; detalhes; exportação CSV e PDF.
+• Erros: ativos x resolvidos, painel de detalhes, copiar, exportar TXT/PDF/DOCX (sem Word),
+  "Tentar novamente" só para falhas de integração com o Veyon.
+• Integração: Veyon CLI, último backup, contagens (adicionar/atualizar/sem alterações/conflito),
+  prévia com explicação do conflito, modal "Integrar computadores ao Veyon", "Nada para integrar",
+  resultado e "Repetir apenas falhas". Backup antes; se falhar, nada é alterado.
+• Atualizações: aba "Este professor" e aba "Computadores do laboratório" (baixar o pacote do aluno
+  do GitHub com assinatura conferida, ou escolher arquivo; PC de teste; destinos; Pendente,
+  Transferindo, Instalando, Confirmada e Falhou separados; repetir apenas falhas).
+• Configurações agrupadas (laboratório, comunicação, integração, atualizações, aparência), padrão
+  de nome com rótulo amigável (corrigido o "[windows, Nome real do computador]") e aviso de
+  alterações não salvas.
+
+STD
+• Visão geral com número do PC em destaque, três cartões (erros, envio, Veyon), ficha com
+  copiar. Distingue: serviço local do Veyon (medido), conectividade (não verificada) e
+  recebimento confirmado pelo professor.
+• Atualizar e enviar: etapas reais (coleta, envio, confirmação), botão bloqueado durante o envio,
+  tentativas recentes e "Tentar novamente".
+• Erros com lista, detalhes, copiar e exportar. Configurações com escolha única Automático/Manual.
+• Primeiro acesso (credenciamento) no mesmo tema. Alterar vínculo continua exigindo administrador.
+• O STD não acessa o GitHub (o serviço recusa; a busca automática não roda no aluno).
+
+ATUALIZAÇÃO E SEGURANÇA
+• Nada mudou no formato: .vsupd assinado pelo publicador; THC assina de novo para os alunos.
+• Novo: ZIP de entrega com exatamente um .vsupd (o serviço extrai e aplica as MESMAS validações);
+  ZIP de código-fonte é recusado. Edição errada (THC no aluno / STD no professor) é recusada.
+• Nada de banco, certificado, credencial ou configuração vai nos pacotes.
+
+TESTES
+• Adicionados: ZIP de entrega (extração, edição errada, ZIP de código, dois pacotes, .vsupd
+  renomeado) e correlação da coleta (presença não conta, resposta 2.2, resposta de agente 2.1,
+  modo manual separado). Rodam no GERAR_ZIPS_UPDATE.bat antes de gerar qualquer ZIP.
+• NÃO executado aqui: compilação, testes e telas no Windows (ambiente sem .NET SDK).
+
+LIMITAÇÕES CONHECIDAS
+• Tamanhos e escalas foram pensados para 1366×768 a 125%/150%, mas não foram vistos numa tela real.
+• "Conectividade com o Veyon Master" não é medida pelo aluno: aparece como não verificada.
+• Aviso NU1903 do SQLitePCLRaw continua (pacote de terceiros).

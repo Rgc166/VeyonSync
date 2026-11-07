@@ -1,0 +1,29 @@
+﻿VEYON SYNC 2.2 — NOVO VISUAL + ZIPs DE ATUALIZAÇÃO SEPARADOS
+=============================================================
+
+IMPORTANTE: este ZIP de "código" NÃO é uma atualização instalável. Ele traz o código-fonte novo
+ou alterado e precisa ser compilado no seu PC. O ambiente onde foi escrito não tinha o .NET SDK,
+então nada aqui foi compilado nem testado no Windows.
+
+COMO GERAR OS DOIS ZIPs DE ATUALIZAÇÃO (no PC de desenvolvimento, o mesmo da chave do publicador)
+1. Extraia este ZIP por cima da pasta do projeto (VeyonSync) e aceite substituir.
+2. Dê dois cliques em GERAR_ZIPS_UPDATE.bat.
+   Ele compila, roda os testes, gera e assina os pacotes da versão 2.2.0 e cria em dist\Entrega\2.2.0\:
+     • VeyonSync-THC-Update-2.2.0.zip   → somente o PROFESSOR
+     • VeyonSync-STD-Update-2.2.0.zip   → somente os ALUNOS (também serve para distribuir pelo THC)
+     • VeyonSync-Recuperacao-2.2.0.zip  → verificação antes de atualizar e restauração manual
+     • SHA256SUMS.txt
+   Também atualiza dist\Pendrive\VeyonSync (plano B pelo INICIAR.bat).
+   Se der erro de compilação ou de teste, nenhum ZIP é criado: envie o log indicado na tela.
+
+ORDEM DE ATUALIZAÇÃO E DEPENDÊNCIAS
+• Primeiro o professor (THC), depois os alunos (STD).
+• Atualização por arquivo exige a versão 2.1.0 já instalada (a que tem a tela "Atualizações").
+  Computadores na 2.0: atualize pelo pendrive (INICIAR.bat > [3]) ou, no caso dos alunos,
+  pela distribuição do professor.
+• THC 2.2 funciona com alunos 2.1 e 2.2; aluno 2.2 funciona com professor 2.1 e 2.2.
+  Com os dois na 2.2 aparecem: andamento real da coleta e "Instalando" separado de "Transferindo".
+• Na 2.1.0 a janela de arquivo só mostra .vsupd: extraia o ZIP e escolha o .vsupd de dentro.
+  A partir da 2.2 a tela aceita o próprio ZIP.
+
+Instruções detalhadas: docs\ATUALIZACOES.txt · Mudanças e limitações: docs\MUDANCAS-2.2.txt
