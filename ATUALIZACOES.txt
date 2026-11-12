@@ -1,0 +1,84 @@
+﻿VEYON SYNC 2.2 — SISTEMA DE ATUALIZAÇÕES (THC e STD)
+=====================================================
+
+Dois tipos de arquivo, que não se misturam:
+  • ZIP de alterações do CÓDIGO-FONTE (este pacote): aplica no projeto e precisa compilar.
+  • Pacotes COMPILADOS .vsupd (VeyonSync-THC-x.y.z-win-x64.vsupd / VeyonSync-STD-...):
+    vão para os computadores instalados, pelo GitHub Releases ou por arquivo (pendrive).
+
+Um .vsupd tem: manifest.json (produto, versão, arquitetura, compatibilidade, notas, SHA-256),
+manifest.sig (assinatura) e payload.zip (o programa compilado). Ele é conferido ANTES de qualquer
+alteração: assinatura do publicador, THC x STD, x64, versão maior que a instalada (downgrade
+bloqueado), compatibilidade, integridade e caminhos seguros.
+
+
+1) APLICAR ESTA ATUALIZAÇÃO INICIAL (só uma vez)
+------------------------------------------------
+1. Extraia o ZIP de alterações por cima do projeto e aceite substituir.
+2. No SEU PC de desenvolvimento, rode PUBLICAR_UPDATE.bat uma primeira vez e escolha
+   [1] Só gerar. Ele cria a sua chave de publicador (veja o item 3) e grava a chave PÚBLICA em
+   assets\release-public-key.txt. Sem essa chave embutida, a versão compilada não aceita pacotes.
+3. Copie dist\Pendrive\VeyonSync para o pendrive e, em cada PC já instalado (professor e alunos),
+   rode INICIAR.bat como administrador > [3] Aplicar atualização.
+   Isso coloca a versão 2.1 com a tela "Atualizações". Dali em diante, dá para atualizar sem pendrive.
+
+
+2) CONFIGURAR O REPOSITÓRIO
+---------------------------
+• Somente no THC: Configurações > Atualizações. Digite dono/repositorio (ex.: renan/veyonsync)
+  e clique em Salvar alterações. O STD não usa repositório (recebe do professor).
+• Se o PUBLICAR_UPDATE.bat já tiver publicado, o repositório fica em assets\github-repo.txt e vem
+  preenchido nas próximas compilações. Nada fictício fica fixo no código.
+• Releases PÚBLICAS: não precisam de token. Repositório privado não é suportado nesta versão
+  (nenhuma credencial vai para os PCs).
+• "Buscar automaticamente" só consulta e avisa (a cada 6 h); instalar é sempre manual.
+• "Incluir versões de teste": aceita versões como 2.2.0-beta.1 (desligado por padrão).
+
+
+3) GERAR E PUBLICAR UMA PRÓXIMA VERSÃO (PC de desenvolvimento)
+---------------------------------------------------------------
+Requisitos: .NET SDK 10; para publicar, GitHub CLI (https://cli.github.com) com "gh auth login".
+1. Dê dois cliques em PUBLICAR_UPDATE.bat.
+2. Informe a versão (ex.: 2.1.1; com "-beta.1" vira versão de teste) e as notas (termine com linha vazia).
+3. Escolha [1] Só gerar ou [2] Gerar e publicar.
+4. Ele compila THC e STD, roda os testes (para em qualquer erro), gera e ASSINA os dois .vsupd,
+   confere a assinatura, gera SHA256SUMS.txt e, no modo 2, pede que você digite PUBLICAR antes de
+   criar a Release v<versão>. Uma versão que já existe nunca é sobrescrita.
+Saída: dist\Releases\<versão>\ ; log: dist\Releases\publicar_<data>.txt
+Chave privada: %USERPROFILE%\.veyonsync-release\publisher.key (protegida pelo Windows para o seu
+usuário). FAÇA BACKUP dessa pasta; sem ela, os PCs instalados não aceitarão novas versões.
+Ela nunca entra no repositório, nos ZIPs nem nas instalações.
+
+
+4) ATUALIZAR PELO GITHUB (somente o professor)
+----------------------------------------------
+Abra o THC (administrador) > Atualizações > aba "Este professor" > "Buscar no GitHub" > confira
+versão e notas > "Baixar e instalar" > confirme. O serviço para alguns segundos e a janela fecha;
+abra-a de novo e confira "Última atualização". Evite durante a aula.
+Os ALUNOS não acessam o GitHub: no THC, aba "Computadores do laboratório" > "Baixar do GitHub"
+baixa o pacote do aluno, confere a assinatura e distribui pela rede (comece por um PC de teste).
+
+
+5) ATUALIZAR POR ARQUIVO (sem internet) — ZIPs separados
+--------------------------------------------------------
+GERAR_ZIPS_UPDATE.bat cria em dist\Entrega\<versão>\:
+  VeyonSync-THC-Update-<versão>.zip  → professor     VeyonSync-STD-Update-<versão>.zip → alunos
+  VeyonSync-Recuperacao-<versão>.zip → verificação antes e restauração manual
+Professor: Atualizações > "Este professor" > Atualizar por arquivo > escolha o ZIP do THC
+  (na 2.1.0, extraia o ZIP e escolha o .vsupd de dentro).
+Aluno: pelo THC (aba "Computadores do laboratório" > Selecionar arquivo > ZIP do STD) ou no
+  próprio aluno: Atualizações > Atualizar por arquivo.
+O pacote errado é recusado (THC no aluno ou STD no professor). Mesmas validações do GitHub.
+
+
+6) LOGS E RECUPERAÇÃO
+---------------------
+Logs (sem senhas, tokens ou chaves):
+  Professor: C:\ProgramData\VeyonSync\Teacher\logs\atualizacao-*.txt
+  Aluno:     C:\ProgramData\VeyonSync\Student\logs\atualizacao-*.txt
+Se a nova versão não sobe em 90 s, o atualizador restaura sozinho o programa E os dados
+(banco, configuração, credenciamento, certificados, mapa) e reinicia a versão anterior.
+Backups das duas últimas atualizações: C:\ProgramData\VeyonSync\<Teacher|Student>\update-backup\
+  (pastas "programa" e "dados"). Restauração manual: pare o serviço (services.msc), copie "programa"
+  para C:\Program Files\VeyonSync\<Teacher|Student> e "dados" para C:\ProgramData\VeyonSync\<...>,
+  e inicie o serviço. O Windows nunca é reiniciado automaticamente.
